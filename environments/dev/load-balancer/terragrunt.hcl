@@ -30,5 +30,21 @@ inputs = {
   vpc_id  = dependency.network.outputs.vpc_id
   subnets = dependency.network.outputs.public_subnet_ids
   
-  security_groups = [dependency.security_groups.outputs.security_group_id] 
+  security_groups = [dependency.security_groups.outputs.security_group_id]
+
+  # Listener HTTP Porta 80 pronto para receber múltiplas Apps
+  http_tcp_listeners = [
+    {
+      port        = 80
+      protocol    = "HTTP"
+      default_action = {
+        type = "fixed-response"
+        fixed_response = {
+          content_type = "text/plain"
+          message_body = "CoreStack Labs - ALB Ready. No app rules matched."
+          status_code  = "404"
+        }
+      }
+    }
+  ]
 }
