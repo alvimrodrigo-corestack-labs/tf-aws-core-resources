@@ -11,7 +11,5 @@ terraform {
 }
 
 inputs = {
-  cluster_name = "corestack-cluster-dev"
-  vpc_id       = dependency.network.outputs.vpc_id
-  subnets      = dependency.network.outputs.private_subnets
+  name = "corestack-cluster-dev"
 }
