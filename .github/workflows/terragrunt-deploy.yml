@@ -11,6 +11,10 @@ env:
   TG_NON_INTERACTIVE: true # Nova variável recomendada
 
 permissions:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
   id-token: write
   contents: write
   pull-requests: write

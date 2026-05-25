@@ -4,6 +4,12 @@ include "root" {
 
 dependency "network" {
   config_path = "../network"
+  
+  mock_outputs = {
+    vpc_id         = "vpc-mock-id"
+    public_subnets = ["subnet-mock-1", "subnet-mock-2"]
+  }
+  mock_outputs_allowed_terraform_commands = ["plan"]
 }
 
 terraform {
@@ -15,8 +21,5 @@ inputs = {
   vpc_id  = dependency.network.outputs.vpc_id
   subnets = dependency.network.outputs.public_subnets
   
-  # Como o módulo exige security_groups e ainda não temos um módulo de SG, 
-  # vou passar uma lista vazia ou criar um SG no core-resources futuramente.
-  # Por agora, para passar no Plan:
   security_groups = [] 
 }
