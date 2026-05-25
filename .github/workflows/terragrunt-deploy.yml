@@ -1,0 +1,65 @@
+name: Terragrunt Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  terragrunt:
+    name: Terragrunt Operations
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "${{ secrets.AWS_ROLE_ARN }}"
+          aws-region: us-east-1
+
+      - name: Setup Terragrunt
+        uses: mscoutermarsh/terragrunt-action@v0.0.2
+        with:
+          terragrunt_version: latest
+
+      - name: Terragrunt Plan (PR)
+        if: github.event_name == 'pull_request'
+        id: plan
+        run: |
+          set -o pipefail
+          terragrunt run-all plan --terragrunt-non-interactive -no-color | tee plan_output.txt
+        working-directory: environments/dev
+
+      - name: Post Plan to PR
+        if: github.event_name == 'pull_request' && (success() || failure())
+        uses: actions/github-script@v7
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('environments/dev/plan_output.txt', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '#### Terragrunt Plan Output 📖\n<details><summary>Show Plan</summary>\n\n```terraform\n' + output + '\n```\n\n</details>'
+            })
+
+      - name: Terragrunt Apply (Push to Main)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          terragrunt run-all apply --terragrunt-non-interactive
+        working-directory: environments/dev

@@ -1,0 +1,39 @@
+name: Terragrunt Destroy (Cost Cleanup)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type "DESTROY" to confirm deletion'
+        required: true
+        default: 'CANCEL'
+
+jobs:
+  destroy:
+    name: Infrastructure Teardown
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirmation == 'DESTROY'
+    
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Setup Terragrunt
+        uses: mscoutermarsh/terragrunt-action@v0.0.2
+        with:
+          terragrunt_version: latest
+
+      - name: Terragrunt Destroy
+        run: |
+          terragrunt run-all destroy --terragrunt-non-interactive
+        working-directory: environments/dev
