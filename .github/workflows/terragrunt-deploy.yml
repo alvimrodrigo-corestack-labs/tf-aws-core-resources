@@ -7,14 +7,10 @@ on:
   workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Futuro-proof para Node.js 24
-  TG_NON_INTERACTIVE: true # Nova variável recomendada
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  TG_NON_INTERACTIVE: true
 
 permissions:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
   id-token: write
   contents: write
   pull-requests: write
