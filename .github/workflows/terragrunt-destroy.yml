@@ -50,5 +50,5 @@ jobs:
 
       - name: Terragrunt Destroy
         run: |
-          terragrunt run-all destroy
+          terragrunt run --all destroy
         working-directory: environments/dev
