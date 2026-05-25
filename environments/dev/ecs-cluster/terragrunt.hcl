@@ -6,8 +6,8 @@ dependency "network" {
   config_path = "../network"
   
   mock_outputs = {
-    vpc_id          = "vpc-mock-id"
-    private_subnets = ["subnet-mock-3", "subnet-mock-4"]
+    vpc_id             = "vpc-mock-id"
+    private_subnet_ids = ["subnet-mock-3", "subnet-mock-4"]
   }
   mock_outputs_allowed_terraform_commands = ["plan"]
 }
