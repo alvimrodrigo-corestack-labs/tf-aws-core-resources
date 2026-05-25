@@ -12,6 +12,15 @@ dependency "network" {
   mock_outputs_allowed_terraform_commands = ["plan"]
 }
 
+dependency "security_groups" {
+  config_path = "../security-groups"
+  
+  mock_outputs = {
+    security_group_id = "sg-mock-id"
+  }
+  mock_outputs_allowed_terraform_commands = ["plan"]
+}
+
 terraform {
   source = "git::git@github.com:alvimrodrigo-corestack-labs/tf-aws-modules.git//modules/alb?ref=main"
 }
@@ -19,7 +28,7 @@ terraform {
 inputs = {
   name    = "corestack-alb-dev"
   vpc_id  = dependency.network.outputs.vpc_id
-  subnets = dependency.network.outputs.public_subnet_ids # Corrigido de public_subnets para public_subnet_ids
+  subnets = dependency.network.outputs.public_subnet_ids
   
-  security_groups = [] 
+  security_groups = [dependency.security_groups.outputs.security_group_id] 
 }
