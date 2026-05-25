@@ -41,5 +41,5 @@ jobs:
 
       - name: Terragrunt Destroy
         run: |
-          terragrunt run-all destroy ---terragrunt-non-interactive
+          terragrunt run-all destroy --terragrunt-non-interactive
         working-directory: environments/dev

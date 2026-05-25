@@ -41,7 +41,7 @@ jobs:
         id: plan
         run: |
           set -o pipefail
-          terragrunt run-all plan ---terragrunt-non-interactive -no-color | tee plan_output.txt
+          terragrunt run-all plan --terragrunt-non-interactive -no-color | tee plan_output.txt
         working-directory: environments/dev
 
       - name: Post Plan to PR
@@ -90,7 +90,7 @@ jobs:
 
       - name: Terragrunt Apply
         run: |
-          terragrunt run-all apply ---terragrunt-non-interactive
+          terragrunt run-all apply --terragrunt-non-interactive
         working-directory: environments/dev
 
       - name: Auto-Merge PR
