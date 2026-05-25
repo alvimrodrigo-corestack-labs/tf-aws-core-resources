@@ -74,7 +74,6 @@ jobs:
     needs: plan
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    environment: aws-deploy
     
     steps:
       - name: Checkout
