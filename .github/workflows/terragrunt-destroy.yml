@@ -8,6 +8,10 @@ on:
         required: true
         default: 'CANCEL'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  TG_NON_INTERACTIVE: true
+
 jobs:
   destroy:
     name: Infrastructure Teardown
@@ -46,5 +50,5 @@ jobs:
 
       - name: Terragrunt Destroy
         run: |
-          TERRAGRUNT_NON_INTERACTIVE=true terragrunt run-all destroy
+          terragrunt run --run-all destroy
         working-directory: environments/dev
