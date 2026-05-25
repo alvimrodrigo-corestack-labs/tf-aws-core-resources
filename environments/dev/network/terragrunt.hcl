@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "../../../../tf-aws-modules//modules/vpc"
+  source = "git::git@github.com:alvimrodrigo-corestack-labs/tf-aws-modules.git//modules/vpc?ref=main"
 }
 
 inputs = {

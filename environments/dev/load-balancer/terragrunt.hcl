@@ -7,7 +7,7 @@ dependency "network" {
 }
 
 terraform {
-  source = "../../../../tf-aws-modules//modules/alb"
+  source = "git::git@github.com:alvimrodrigo-corestack-labs/tf-aws-modules.git//modules/alb?ref=main"
 }
 
 inputs = {
