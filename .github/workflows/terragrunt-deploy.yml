@@ -73,7 +73,7 @@ jobs:
   apply:
     name: Terragrunt Apply
     needs: plan
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: aws-deploy
     
@@ -109,7 +109,7 @@ jobs:
         working-directory: environments/dev
 
       - name: Auto-Merge PR
-        if: success()
+        if: github.event_name == 'pull_request' && success()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
