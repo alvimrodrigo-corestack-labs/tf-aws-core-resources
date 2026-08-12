@@ -32,7 +32,7 @@ inputs = {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
-      cidr_blocks = ["162.120.186.84/32"]
+      cidr_blocks = ["54.232.26.136/32"]
       description = "Allow HTTPS from User IP only"
     }
   ]
